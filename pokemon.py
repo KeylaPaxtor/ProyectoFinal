@@ -47,3 +47,5 @@ class Pokemon(ABC):
     def descansar(self):
         self.energia_actual += 20
         print(f'{self.nombre} recuperó energía.')
+
+        
