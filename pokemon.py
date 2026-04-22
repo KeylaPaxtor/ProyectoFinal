@@ -32,6 +32,7 @@ class Pokemon(ABC):
         else:
             self.__energia_actual = puntos_energia
 
+    # metodos de pokemones
     @abstractmethod
     def atacar(self, oponente):
         pass
