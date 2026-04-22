@@ -45,3 +45,28 @@ else:
     opcion_computadora = str(random.randint(1, len(CATALOGO_POKEMON)))
     pokemon_jugador2 = crear_pokemon(opcion_computadora)
     print('Computadora eligió', pokemon_jugador2.nombre)
+
+print('\n', pokemon_jugador1.nombre, 'vs', pokemon_jugador2.nombre)
+
+turno_jugador1 = True
+
+while pokemon_jugador1.hp_actual > 0 and pokemon_jugador2.hp_actual > 0:
+
+    if turno_jugador1:
+        pokemon_atacante = pokemon_jugador1
+        pokemon_defensor = pokemon_jugador2
+    else:
+        pokemon_atacante = pokemon_jugador2
+        pokemon_defensor = pokemon_jugador1
+
+    print('\nTurno de', pokemon_atacante.nombre)
+    print('HP:', pokemon_atacante.hp_actual, '/', pokemon_atacante.hp_maximo)
+    print('EP:', pokemon_atacante.energia_actual, '/', pokemon_atacante.energia_maxima)
+
+    if pokemon_atacante.paralizado:
+        print('Está paralizado y pierde turno')
+        pokemon_atacante.paralizado = False
+    else:
+        print('1. Atacar')
+        print('2. Defender')
+        print('3. Descansar')
