@@ -1,4 +1,5 @@
 from pokemon import Pokemon
+import random
 
 class PokemonAgua(Pokemon):
     def atacar(self, rival):
@@ -8,9 +9,12 @@ class PokemonAgua(Pokemon):
 
         daño = 10
 
-        if rival.tipo == 'Fuego':
+        if isinstance(rival, PokemonFuego):
             daño *= 2
-            print('¡Súper efectivo!')
+            print('¡Es súper efectivo!')
+
+        elif isinstance(rival, PokemonPlanta):
+            print('No es muy efectivo...')
 
         if rival.defendiendo:
             daño //= 2
@@ -19,7 +23,7 @@ class PokemonAgua(Pokemon):
         self.energia_actual -= 15
         rival.hp_actual -= daño
         print(f'{self.nombre} hace {daño} de daño')
-        
+
 
 class PokemonFuego(Pokemon):
     def atacar(self, rival):
@@ -29,9 +33,12 @@ class PokemonFuego(Pokemon):
 
         daño = 10
 
-        if rival.tipo == 'Planta':
+        if isinstance(rival, PokemonPlanta):
             daño *= 2
-            print('¡Súper efectivo!')
+            print('¡Es súper efectivo!')
+
+        elif isinstance(rival, PokemonAgua):
+            print('No es muy efectivo...')
 
         if rival.defendiendo:
             daño //= 2
@@ -50,9 +57,12 @@ class PokemonPlanta(Pokemon):
 
         daño = 10
 
-        if rival.tipo == 'Agua':
+        if isinstance(rival, PokemonAgua):
             daño *= 2
-            print('Ataque efectivo')
+            print('¡Es súper efectivo!')
+
+        elif isinstance(rival, PokemonFuego):
+            print('No es muy efectivo...')
 
         if rival.defendiendo:
             daño //= 2
@@ -75,9 +85,10 @@ class PokemonElectrico(Pokemon):
             daño //= 2
             rival.defendiendo = False
 
+        # Probabilidad de paralizar
         if random.random() < 0.2:
             rival.paralizado = True
-            print('El rival ha sido paralizado')
+            print('El rival ha sido paralizado!')
 
         self.energia_actual -= 15
         rival.hp_actual -= daño
