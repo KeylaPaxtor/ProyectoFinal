@@ -3,9 +3,6 @@ from pokemon_clases import PokemonAgua, PokemonFuego, PokemonPlanta, PokemonElec
 import random
 
 
-# ======================
-# CREAR POKÉMON
-# ======================
 def crear_pokemon(opcion):
     datos = CATALOGO_POKEMON[opcion]
 
@@ -19,123 +16,102 @@ def crear_pokemon(opcion):
         return PokemonElectrico(datos['nombre'], datos['hp_maximo'], datos['energia_maxima'])
 
 
-# ======================
-# FUNCIONES DE VISUALIZACIÓN
-# ======================
-def mostrar_menu_principal():
-    print('===================================')
-    print(' SIMULADOR DE BATALLAS POKÉMON')
-    print('===================================')
-    print('1. Jugador vs Jugador')
-    print('2. Jugador vs Computadora')
-
-
 def mostrar_estado(pokemon, es_computadora=False):
-    print('\n-----------------------------------')
-    if es_computadora:
-        print('Turno de la Computadora (', pokemon.nombre, ')')
-    else:
-        print('Turno de', pokemon.nombre)
+    print('---------------------------------------------------')
 
-    print('HP:', pokemon.hp_actual, '/', pokemon.hp_maximo)
-    print('EP:', pokemon.energia_actual, '/', pokemon.energia_maxima)
+    if es_computadora:
+        print('TURNO DE', pokemon.nombre, '(Computadora)')
+    else:
+        print('TURNO DE', pokemon.nombre)
+
+    print('[HP:', str(pokemon.hp_actual) + '/' + str(pokemon.hp_maximo) + ']',
+          '|',
+          '[EP:', str(pokemon.energia_actual) + '/' + str(pokemon.energia_maxima) + ']')
 
 
 def mostrar_acciones():
-    print('1. Atacar')
-    print('2. Defender')
-    print('3. Descansar')
+    print('\n¿Qué acción deseas realizar?\n')
+    print('1. Atacar (Costo: 15 EP)')
+    print('2. Defender (Costo: 5 EP)')
+    print('3. Descansar (Restaura: 20 EP)')
 
 
-def mostrar_ganador(jugador1, jugador2):
-    print('\nFIN DEL JUEGO')
-    if jugador1.hp_actual <= 0:
-        print('Gana', jugador2.nombre)
-    else:
-        print('Gana', jugador1.nombre)
+print('===================================================')
+print('   SIMULADOR DE BATALLAS POKÉMON (POO)')
+print('===================================================')
 
+print('Seleccione el Modo de Juego:')
+print('1. Jugador vs Jugador')
+print('2. Jugador vs Computadora')
 
-# ======================
-# FUNCIONES DE ENTRADA
-# ======================
-def pedir_modo_juego():
-    while True:
-        modo = input('Elige modo: ')
-        if modo in ['1', '2']:
-            return modo
-        else:
-            print('Opción inválida')
-
-
-def pedir_pokemon(mensaje):
-    while True:
-        opcion = input(mensaje)
-        if opcion in CATALOGO_POKEMON:
-            return opcion
-        else:
-            print('Opción inválida')
-
-
-def pedir_accion():
-    try:
-        return int(input('Opción: '))
-    except:
-        return 0
-
-
-# ======================
-# PROGRAMA PRINCIPAL
-# ======================
-
-mostrar_menu_principal()
-modo_juego = pedir_modo_juego()
+modo_juego = input('> Opción: ')
 
 mostrar_catalogo_disponible()
 
+
 # Jugador 1
-opcion_jugador1 = pedir_pokemon('Jugador 1: ')
-pokemon_jugador1 = crear_pokemon(opcion_jugador1)
+while True:
+    opcion_jugador1 = input('Jugador 1, elija el número de su Pokémon: ')
+    if opcion_jugador1 in CATALOGO_POKEMON:
+        pokemon_jugador1 = crear_pokemon(opcion_jugador1)
+        print('¡Has seleccionado a', pokemon_jugador1.nombre + '!')
+        break
+    else:
+        print('Opción inválida')
+
 
 # Jugador 2 o Computadora
 if modo_juego == '1':
-    opcion_jugador2 = pedir_pokemon('Jugador 2: ')
-    pokemon_jugador2 = crear_pokemon(opcion_jugador2)
-    es_computadora = False
+    while True:
+        opcion_jugador2 = input('Jugador 2, elija el número de su Pokémon: ')
+        if opcion_jugador2 in CATALOGO_POKEMON:
+            pokemon_jugador2 = crear_pokemon(opcion_jugador2)
+            print('¡Has seleccionado a', pokemon_jugador2.nombre + '!')
+            es_computadora = False
+            break
+        else:
+            print('Opción inválida')
 else:
-    opcion_computadora = str(random.randint(1, len(CATALOGO_POKEMON)))
-    pokemon_jugador2 = crear_pokemon(opcion_computadora)
-    print('La Computadora eligió', pokemon_jugador2.nombre)
+    print('Computadora eligiendo combatiente...')
+    opcion_cpu = str(random.randint(1, len(CATALOGO_POKEMON)))
+    pokemon_jugador2 = crear_pokemon(opcion_cpu)
+    print('¡La computadora ha seleccionado a', pokemon_jugador2.nombre + '!')
     es_computadora = True
 
 
-print('\n', pokemon_jugador1.nombre, 'vs', pokemon_jugador2.nombre)
+print('\n¡COMIENZA LA BATALLA!')
+print(pokemon_jugador1.nombre, 'vs', pokemon_jugador2.nombre)
 
 turno_jugador1 = True
+
 
 while pokemon_jugador1.hp_actual > 0 and pokemon_jugador2.hp_actual > 0:
 
     if turno_jugador1:
         atacante = pokemon_jugador1
         defensor = pokemon_jugador2
-        turno_es_computadora = False
+        turno_computadora = False
     else:
         atacante = pokemon_jugador2
         defensor = pokemon_jugador1
-        turno_es_computadora = es_computadora
+        turno_computadora = es_computadora
 
-    mostrar_estado(atacante, turno_es_computadora)
+    mostrar_estado(atacante, turno_computadora)
 
     if atacante.paralizado:
-        print('Está paralizado y pierde turno')
+        print('Está paralizado y pierde el turno')
         atacante.paralizado = False
     else:
         mostrar_acciones()
 
-        if turno_es_computadora:
+        if turno_computadora:  # ✔️ CORREGIDO
             opcion = random.randint(1, 3)
-            print('La Computadora eligió', opcion)
+            print('> La computadora elige:', opcion)
         else:
-            opcion = pedir_accion()
+            try:
+                opcion = int(input('> Opción: '))
+            except:
+                opcion = 0
 
         if opcion == 1:
             atacante.atacar(defensor)
@@ -146,7 +122,15 @@ while pokemon_jugador1.hp_actual > 0 and pokemon_jugador2.hp_actual > 0:
         else:
             print('Opción inválida')
 
+        if pokemon_jugador1.hp_actual == 0 or pokemon_jugador2.hp_actual == 0:
+            break
+
     turno_jugador1 = not turno_jugador1
 
 
-mostrar_ganador(pokemon_jugador1, pokemon_jugador2)
+print('---------------------------------------------------')
+
+if pokemon_jugador1.hp_actual <= 0:
+    print('¡Gana', pokemon_jugador2.nombre + '!')
+else:
+    print('¡Gana', pokemon_jugador1.nombre + '!')

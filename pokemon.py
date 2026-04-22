@@ -9,8 +9,12 @@ class Pokemon(ABC):
         self.__energia_actual = energia_maxima
         self.__energia_maxima = energia_maxima
         self.defendiendo = False
+        self.paralizado = False 
 
-    # Encapsulamiento
+    @property
+    def nombre(self):
+        return self._nombre
+
     @property
     def hp_actual(self):
         return self.__hp_actual
@@ -41,7 +45,6 @@ class Pokemon(ABC):
         else:
             self.__energia_actual = puntos_energia
 
-    # metodos de pokemones
     @property
     def energia_maxima(self):
         return self.__energia_maxima

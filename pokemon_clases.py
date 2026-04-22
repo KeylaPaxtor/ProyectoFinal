@@ -1,6 +1,7 @@
 from pokemon import Pokemon
 import random
 
+
 class PokemonAgua(Pokemon):
     def atacar(self, rival):
         if self.energia_actual < 15:
@@ -12,7 +13,6 @@ class PokemonAgua(Pokemon):
         if isinstance(rival, PokemonFuego):
             daño *= 2
             print('¡Es súper efectivo!')
-
         elif isinstance(rival, PokemonPlanta):
             print('No es muy efectivo...')
 
@@ -36,7 +36,6 @@ class PokemonFuego(Pokemon):
         if isinstance(rival, PokemonPlanta):
             daño *= 2
             print('¡Es súper efectivo!')
-
         elif isinstance(rival, PokemonAgua):
             print('No es muy efectivo...')
 
@@ -60,7 +59,6 @@ class PokemonPlanta(Pokemon):
         if isinstance(rival, PokemonAgua):
             daño *= 2
             print('¡Es súper efectivo!')
-
         elif isinstance(rival, PokemonFuego):
             print('No es muy efectivo...')
 
@@ -85,7 +83,6 @@ class PokemonElectrico(Pokemon):
             daño //= 2
             rival.defendiendo = False
 
-        # Probabilidad de paralizar
         if random.random() < 0.2:
             rival.paralizado = True
             print('El rival ha sido paralizado!')
