@@ -19,3 +19,23 @@ class PokemonAgua(Pokemon):
         self.energia_actual -= 15
         rival.hp_actual -= daño
         print(f'{self.nombre} hace {daño} de daño')
+
+class PokemonFuego(Pokemon):
+    def atacar(self, rival):
+        if self.energia_actual < 15:
+            print('No tienes energía suficiente para poder atacar.')
+            return
+
+        daño = 10
+
+        if rival.tipo == 'Planta':
+            daño *= 2
+            print('¡Súper efectivo!')
+
+        if rival.defendiendo:
+            daño //= 2
+            rival.defendiendo = False
+
+        self.energia_actual -= 15
+        rival.hp_actual -= daño
+        print(f'{self.nombre} hace {daño} de daño')
