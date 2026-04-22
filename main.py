@@ -70,3 +70,31 @@ while pokemon_jugador1.hp_actual > 0 and pokemon_jugador2.hp_actual > 0:
         print('1. Atacar')
         print('2. Defender')
         print('3. Descansar')
+
+        if modo_juego == '2' and not turno_jugador1:
+            opcion_accion = random.randint(1, 3)
+            print('Computadora eligió', opcion_accion)
+        else:
+            try:
+                opcion_accion = int(input('Opción: '))
+            except:
+                opcion_accion = 0
+
+        if opcion_accion == 1:
+            pokemon_atacante.atacar(pokemon_defensor)
+        elif opcion_accion == 2:
+            pokemon_atacante.defender()
+        elif opcion_accion == 3:
+            pokemon_atacante.descansar()
+        else:
+            print('Opción inválida')
+
+    turno_jugador1 = not turno_jugador1
+
+
+print('\nFIN DEL JUEGO')
+
+if pokemon_jugador1.hp_actual <= 0:
+    print('Gana', pokemon_jugador2.nombre)
+else:
+    print('Gana', pokemon_jugador1.nombre)
